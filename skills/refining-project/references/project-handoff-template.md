@@ -1,171 +1,171 @@
-# 项目交接文档模板
+# Project Handoff Document Template
 
-使用本模板生成最终交接文档。所有结论必须尽量绑定代码、配置、目录、依赖或用户提供的信息；不适用的章节直接删除，不要保留空壳。
+Use this template for the final handoff document. Every conclusion should be tied to code, configuration, directories, dependencies, or information provided by the user. Delete sections that do not apply; do not leave empty shells.
 
-## 项目概览
+## Project Overview
 
-- 项目类型：
-- 核心价值：
-- 设计重点：
-- 技术栈：
-  - 前端：
-  - 后端：
-  - 构建/运行：
-  - 状态管理：
-  - UI/样式：
-  - 数据/存储：
-  - 测试/质量：
-- 关键入口：
-- 运行与构建命令：
-- 已确认事实：
-- 基于证据的推断：
+- Project type:
+- Core value:
+- Design focus:
+- Technology stack:
+  - Frontend:
+  - Backend:
+  - Build/runtime:
+  - State management:
+  - UI/styling:
+  - Data/storage:
+  - Testing/quality:
+- Key entry points:
+- Run and build commands:
+- Confirmed facts:
+- Evidence-based inferences:
 
-## 证据索引
+## Evidence Index
 
-| 判断项 | 证据文件/位置 | 结论 | 可信度 |
+| Judgment | Evidence file/location | Conclusion | Confidence |
 | --- | --- | --- | --- |
-| 技术栈 |  |  | 高 / 中 / 低 |
-| 入口文件 |  |  | 高 / 中 / 低 |
-| 核心模块 |  |  | 高 / 中 / 低 |
-| 构建/测试/部署 |  |  | 高 / 中 / 低 |
-| 外部依赖 |  |  | 高 / 中 / 低 |
+| Technology stack |  |  | High / Medium / Low |
+| Entry points |  |  | High / Medium / Low |
+| Core modules |  |  | High / Medium / Low |
+| Build/test/deploy |  |  | High / Medium / Low |
+| External dependencies |  |  | High / Medium / Low |
 
-## 仓库状态与运行风险
+## Repository State and Runtime Risk
 
-- 当前分支：
-- 工作区状态：
-- 依赖安装状态：
-- 已识别命令：
-  - 安装：
-  - 开发运行：
-  - 测试：
-  - 构建：
-  - Lint/格式化：
-- 已执行验证：
-- 未执行验证及原因：
-- 运行风险：
+- Current branch:
+- Working tree state:
+- Dependency installation status:
+- Identified commands:
+  - Install:
+  - Development:
+  - Test:
+  - Build:
+  - Lint/format:
+- Validations executed:
+- Validations not executed and why:
+- Runtime risks:
 
-## 架构分析
+## Architecture Analysis
 
-- 架构模式：
-- 渲染/运行模式：
-- 目录结构说明：
-- 核心依赖关系：
-- 数据流/调用链：
-- 关键设计取舍：
-- 架构边界是否清晰：
+- Architecture pattern:
+- Rendering/runtime mode:
+- Directory structure:
+- Core dependency relationships:
+- Data flow/call chain:
+- Key design tradeoffs:
+- Are architecture boundaries clear?
 
-### 轻量架构视图（复杂项目适用）
+### Lightweight Architecture View (For Complex Projects)
 
-项目存在多个应用、服务、worker、数据库或复杂外部依赖时填写；小项目可删除本节。
+Fill this section when the project has multiple apps, services, workers, databases, or complex external dependencies. Delete it for small projects.
 
-- 系统上下文：
-- 应用/服务视图：
-- 模块/组件视图：
-- 外部依赖：
-- 关键调用链：
+- System context:
+- App/service view:
+- Module/component view:
+- External dependencies:
+- Key call chain:
 
-## 工程成熟度评级
+## Engineering Maturity Rating
 
-| 维度 | 等级 | 证据 | 主要风险 |
+| Dimension | Rating | Evidence | Main Risk |
 | --- | --- | --- | --- |
-| 架构清晰度 | 高 / 中 / 低 / 未确认 |  |  |
-| 代码一致性 | 高 / 中 / 低 / 未确认 |  |  |
-| 测试保障 | 高 / 中 / 低 / 未确认 |  |  |
-| 性能风险 | 高 / 中 / 低 / 未确认 |  |  |
-| 安全/权限边界 | 高 / 中 / 低 / 未确认 |  |  |
-| 文档与开发体验 | 高 / 中 / 低 / 未确认 |  |  |
-| 可扩展性 | 高 / 中 / 低 / 未确认 |  |  |
+| Architecture clarity | High / Medium / Low / Unconfirmed |  |  |
+| Code consistency | High / Medium / Low / Unconfirmed |  |  |
+| Test coverage | High / Medium / Low / Unconfirmed |  |  |
+| Performance risk | High / Medium / Low / Unconfirmed |  |  |
+| Security/authorization boundaries | High / Medium / Low / Unconfirmed |  |  |
+| Documentation and developer experience | High / Medium / Low / Unconfirmed |  |  |
+| Extensibility | High / Medium / Low / Unconfirmed |  |  |
 
-## 模块说明
+## Module Breakdown
 
-| 模块 | 位置 | 职责 | 依赖/被依赖 | 备注 |
+| Module | Location | Responsibility | Depends on / Used by | Notes |
 | --- | --- | --- | --- | --- |
 
-## 问题总结
+## Issue Summary
 
-按严重程度排序。每个问题都要说明为什么是问题。严重度可使用 P0/P1/P2/P3 或 高/中/低，但同一份文档中保持一致。
+Sort issues by severity. Every issue must explain why it is a problem. Use either P0/P1/P2/P3 or High/Medium/Low consistently throughout the document.
 
-| 严重度 | 问题 | 位置/证据 | 为什么是问题 | 影响 | 建议方向 | 验证方式 |
+| Severity | Issue | Location/Evidence | Why It Is a Problem | Impact | Recommended Direction | Validation |
 | --- | --- | --- | --- | --- | --- | --- |
 
-### 重复造轮子检查
+### Reinvented Wheel / Duplication Check
 
-- 已有可复用能力：
-- 疑似重复实现：
-- 建议复用方式：
-- 不建议新增实现的原因：
-- 新增实现前检查结论：
+- Existing reusable capabilities:
+- Suspected duplicated implementations:
+- Recommended reuse path:
+- Why new implementation is not recommended:
+- Pre-new-code reuse check result:
 
-### 技术选型评估
+### Technology Choice Assessment
 
-- 合理之处：
-- 不合理或成本偏高之处：
-- 替代方案：
+- Reasonable choices:
+- Unreasonable or high-cost choices:
+- Alternatives:
 
-## 优化建议
+## Optimization Recommendations
 
-### 架构优化
+### Architecture Optimization
 
-- 现状：
-- 证据：
-- 建议：
-- 执行步骤：
-- 风险：
-- 验证方式：
+- Current state:
+- Evidence:
+- Recommendation:
+- Execution steps:
+- Risk:
+- Validation:
 
-### 代码层优化
+### Code-Level Optimization
 
-给出贴合当前技术栈的示例代码。示例必须服务于具体问题，不要为了展示而展示。
+Provide examples in the current technology stack when useful. Examples must serve a concrete issue; do not include examples just for display.
 
-- 现状：
-- 证据：
-- 建议：
-- 示例代码：
-- 验证方式：
+- Current state:
+- Evidence:
+- Recommendation:
+- Example code:
+- Validation:
 
-### 性能优化
+### Performance Optimization
 
-- 性能风险：
-- 证据：
-- 如何验证：
-- 优化方案：
+- Performance risk:
+- Evidence:
+- How to verify:
+- Optimization plan:
 
-### 可扩展性改进
+### Extensibility Improvements
 
-- 近期可做：
-- 中期可做：
-- 暂不建议做：
-- 暂不建议做的原因：
+- Short-term improvements:
+- Mid-term improvements:
+- Not recommended yet:
+- Why not recommended:
 
-### 重构判断
+### Refactoring Decision
 
-- 是否适合重构：
-- 重构范围：
-- 分阶段计划：
-- 回归验证方式：
+- Is refactoring appropriate?
+- Refactoring scope:
+- Phased plan:
+- Regression validation:
 
-## 后续开发指南
+## Future Development Guide
 
-- 代码风格与结构约定：
-- 已有工具函数/公共模块：
-- 可复用模块：
-- 新增功能应优先参考的位置：
-- 特别注意的坑点：
-- 开发前检查清单：
-  - 是否已有相同工具函数、组件、服务或 hook？
-  - 是否符合现有目录边界？
-  - 是否复用了项目现有 API/client/schema/validation？
-  - 是否补充了必要测试或验证步骤？
-  - 是否引入了不必要的新依赖？
+- Code style and structure conventions:
+- Existing utilities/shared modules:
+- Reusable modules:
+- Best places to reference before adding features:
+- Special traps or gotchas:
+- Pre-development checklist:
+  - Does a similar utility, component, service, or hook already exist?
+  - Does the change fit existing directory boundaries?
+  - Does it reuse existing API/client/schema/validation patterns?
+  - Does it include necessary tests or validation steps?
+  - Does it introduce an unnecessary new dependency?
 
-## 外部资料与版本依据
+## External Sources and Version Evidence
 
-如使用外部资料、官方文档或当前最佳实践，列出来源；如果完全基于本地代码分析，可删除本节。
+If external sources, official documentation, or current best practices were used, list them here. Delete this section if the analysis is fully based on local code.
 
-| 来源 | 用途 | 结论 |
+| Source | Purpose | Conclusion |
 | --- | --- | --- |
 
-## 未确认事项
+## Unconfirmed Items
 
-列出因代码不完整、配置缺失、无法运行或用户未提供信息导致无法确认的内容。
+List anything that could not be confirmed because code is incomplete, configuration is missing, commands could not be run, or the user did not provide enough information.

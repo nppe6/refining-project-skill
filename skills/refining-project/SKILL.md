@@ -1,126 +1,126 @@
 ---
 name: refining-project
-description: 深度分析已有软件项目、局部代码或项目描述，并输出可直接用于交接的项目理解、架构评审、代码质量评估、优化方案和 AI 后续开发指南。适用于用户要求“接手项目”“理解代码库”“做架构评审”“检查重复造轮子”“判断技术选型是否合理”“沉淀项目交接文档”或“让 AI 后续继续开发时避免重复实现已有工具/模块”的场景。
+description: Deeply analyze an existing software project, partial codebase, or project description and produce a practical project handoff, architecture review, code quality assessment, optimization plan, and AI-ready follow-up development guide. Use when the user asks to take over a project, understand a codebase, review architecture, detect duplicated work or reinvented wheels, evaluate technology choices, create handoff documentation, or prepare future AI development without reimplementing existing utilities or modules.
 ---
 
-# 项目接手评审
+# Project Handoff Review
 
-使用本 skill 时，将项目代码、局部代码片段或项目描述转化为有证据支撑的项目交接与工程评审文档。目标不是罗列文件摘要，而是帮助后续开发者或 AI agent 安全、快速地继续开发。
+Use this skill to turn project code, partial code snippets, or a project description into an evidence-backed handoff and engineering review. The goal is not to summarize files superficially, but to help a future developer or AI agent continue work safely and quickly.
 
-## 使用原则
+## Principles
 
-- 所有重要判断都必须基于代码、配置、目录结构、依赖清单、脚本、路由、数据模型或用户明确提供的信息。
-- 区分“已确认事实”和“基于证据的推断”。如果信息不足，明确写出已知内容、推断内容和未确认事项。
-- 优先输出具体、可执行的工程判断，避免空泛建议。每个问题都说明位置、证据、为什么是问题、影响和建议方向。
-- 推荐新增实现前，必须先检查项目中是否已有公共工具函数、组件、服务、hook、中间件、常量、schema、客户端封装或适配器。
-- 每条新增实现建议都必须通过复用检查：是否已有同类函数、组件、服务、schema、client 或第三方库；如果已有，优先说明复用方式，而不是建议新建。
-- 将“重复造轮子”作为重点检查项：识别重复逻辑、自研但可复用现有库的能力、以及应复用的内部模块。
-- 外部资料只能辅助判断，不能覆盖本地代码证据。涉及框架 API、依赖版本、最佳实践或安全规则且可能过期时，优先查官方文档或当前资料，并在输出中标明来源。
-- 保持用户语言一致。用户使用中文提问时，输出中文。
+- Ground every important judgment in code, configuration, directory structure, dependency manifests, scripts, routes, data models, or information explicitly provided by the user.
+- Distinguish confirmed facts from evidence-based inferences. When information is incomplete, state what is known, what is inferred, and what remains unconfirmed.
+- Prefer concrete, actionable engineering judgments over generic advice. Every issue must explain location, evidence, why it is a problem, impact, and recommended direction.
+- Before recommending new implementation, check whether the project already has shared utilities, components, services, hooks, middleware, constants, schemas, client wrappers, or adapters.
+- Every recommendation to add new code must pass a reuse check: determine whether a similar function, component, service, schema, client, or third-party library already exists; if it does, explain how to reuse it instead of creating a new implementation.
+- Treat duplicated work and reinvented wheels as first-class review targets: identify repeated logic, custom code that should use an existing library, and internal modules that should be reused.
+- External sources may support judgment, but must not override local code evidence. When framework APIs, dependency versions, best practices, or security rules may be outdated, prefer official or current sources and cite them in the output.
+- Preserve the user's language. If the user asks in English, respond in English.
 
-## 工作流程
+## Workflow
 
-1. **盘点项目**
-   - 阅读根目录文件：`README`、依赖/构建清单、lockfile、框架配置、环境变量示例、Docker/CI 配置、测试配置、AGENTS/CLAUDE/CODEX 指南。
-   - 使用 `rg --files` 建立文件视图，再重点检查应用逻辑、测试、公共模块和配置目录。
-   - 找出运行入口：前端路由/页面、后端服务入口、API route/controller、CLI 入口、任务/worker、serverless handler 等。
-   - 检查仓库状态和运行风险：当前分支、未提交修改、依赖是否可安装、运行/测试/构建命令是否可识别、哪些验证无法执行。
+1. **Inventory the project**
+   - Read root files: `README`, dependency/build manifests, lockfiles, framework config, environment examples, Docker/CI config, test config, and AGENTS/CLAUDE/CODEX guidance.
+   - Use `rg --files` to build a file map, then inspect application logic, tests, shared modules, and configuration directories.
+   - Identify runtime entry points: frontend routes/pages, backend server entry points, API routes/controllers, CLI entry points, jobs/workers, serverless handlers, etc.
+   - Check repository state and runtime risk: current branch, uncommitted changes, whether dependencies can be installed, whether run/test/build commands are identifiable, and which validations cannot be executed.
 
-2. **识别项目定位与技术栈**
-   - 判断项目类型：后台管理系统、SaaS、博客/内容站、工具类应用、类库、API 服务、移动端应用、游戏、自动化脚本等。
-   - 从真实文件中提取前端、后端、构建工具、路由、状态管理、UI 库、样式方案、数据存储、认证、测试、lint、部署等技术栈。
-   - 不要只凭文件名猜测；优先使用 manifest、配置文件、import 和入口文件作为证据。
+2. **Identify project type and stack**
+   - Classify the project type: admin system, SaaS, blog/content site, tool, library, API service, mobile app, game, automation script, etc.
+   - Extract frontend, backend, build tools, routing, state management, UI library, styling approach, data storage, authentication, testing, linting, and deployment stack from actual files.
+   - Do not guess from filenames alone; prefer manifests, config files, imports, and entry points as evidence.
 
-3. **分析架构与模块**
-   - 描述架构模式：MVC、分层架构、模块化单体、微服务、微前端、SSR、CSR、SSG、serverless、事件驱动、插件化等。
-   - 按职责拆解核心模块，并标注实现位置。
-   - 说明关键依赖流：UI 到状态/API、controller 到 service/model、job 到 queue、adapter 到外部服务、shared package 到业务应用等。
-   - 从业务流程、领域实体和代码组织中提炼项目的核心价值与设计重点。
-   - 当项目存在多个应用、服务、worker、数据库或复杂外部依赖时，读取 `references/architecture-views.md`，在“架构分析”中增加轻量架构视图；小项目不强制画图。
+3. **Analyze architecture and modules**
+   - Describe the architecture pattern: MVC, layered architecture, modular monolith, microservices, micro-frontend, SSR, CSR, SSG, serverless, event-driven, plugin-based, etc.
+   - Break down core modules by responsibility and cite their locations.
+   - Explain key dependency flows: UI to state/API, controller to service/model, job to queue, adapter to external service, shared package to business app, etc.
+   - Infer the project's core value and design focus from business flows, domain entities, and code organization.
+   - When the project has multiple apps, services, workers, databases, or complex external dependencies, read `references/architecture-views.md` and add a lightweight architecture view in the architecture analysis. Do not force diagrams for small projects.
 
-4. **评审代码与架构**
-   - 总结优点：架构边界、框架约定、代码规范、可维护性、可扩展性、测试性、开发体验等。
-   - 列出具体问题。每个问题包含：位置、证据、为什么是问题、影响、建议方向。
-   - 重点检查重复逻辑、重复造轮子、不必要抽象、依赖误用、性能隐患、不安全的数据流和边界不清。
-   - 只有当代码证据显示存在复杂度、风险、维护成本或业务不匹配时，才指出技术选型不合理。
-   - 当项目明显属于前端、后端/API、数据库、DevOps/部署或 AI/agent 类型时，读取 `references/review-checklists.md` 中对应章节辅助评审。
+4. **Review code and architecture**
+   - Summarize strengths: architecture boundaries, framework conventions, code style, maintainability, extensibility, testability, and developer experience.
+   - List concrete issues. Each issue must include location, evidence, why it is a problem, impact, and recommended direction.
+   - Focus on duplicated logic, reinvented wheels, unnecessary abstractions, dependency misuse, performance risks, unsafe data flow, and unclear boundaries.
+   - Only flag technology choices as unreasonable when code evidence shows mismatch, complexity, risk, maintenance cost, or poor fit for the product.
+   - When the project is clearly frontend, backend/API, database-heavy, DevOps/deployment-heavy, or AI/agent-oriented, read the relevant section of `references/review-checklists.md`.
 
-5. **给出可执行优化建议**
-   - 架构优化必须对应已观察到的问题，不做无必要的大改造。
-   - 代码层建议尽量给出贴合当前技术栈的示例代码。
-   - 性能建议必须绑定可验证路径：渲染、查询、网络请求、缓存、bundle 体积、启动耗时、循环、IO、并发或数据加载。
-   - 可扩展性建议优先复用项目现有模式。
-   - 判断是否适合重构。如果适合，给出分阶段、低风险的重构路径。
-   - 每条建议尽量包含“证据 -> 方案 -> 执行步骤 -> 验证方式 -> 风险”。如果缺少证据，标记为待验证建议。
+5. **Provide executable optimization recommendations**
+   - Architecture recommendations must address observed problems; avoid unnecessary large rewrites.
+   - Code-level recommendations should include examples in the project's actual technology stack when useful.
+   - Performance recommendations must connect to verifiable paths: rendering, queries, network calls, caching, bundle size, startup time, loops, IO, concurrency, or data loading.
+   - Extensibility recommendations should reuse existing project patterns.
+   - Decide whether refactoring is appropriate. If so, provide a phased, low-risk refactoring path.
+   - Each recommendation should ideally include: evidence -> proposal -> execution steps -> validation method -> risk. If evidence is missing, mark it as a hypothesis to verify.
 
-6. **准备 AI 后续开发**
-   - 总结代码风格、命名习惯、目录约定、测试方式、常用脚本和本地命令。
-   - 列出可复用的工具函数、公共模块、组件、服务、schema、客户端封装等，并说明使用场景。
-   - 标出坑点：隐藏耦合、生成文件、环境依赖、迁移风险、脆弱测试、框架生命周期陷阱、容易重复实现的区域。
-   - 输出“新增代码前检查清单”，帮助后续 AI 避免重复造轮子。
+6. **Prepare future AI development**
+   - Summarize coding style, naming habits, directory conventions, testing approach, common scripts, and local commands.
+   - List reusable utilities, shared modules, components, services, schemas, and client wrappers, and explain when to use them.
+   - Call out traps: hidden coupling, generated files, environment dependencies, migration risks, brittle tests, framework lifecycle concerns, and areas where duplicated implementation is likely.
+   - Include a "before adding new code" checklist to help future AI agents avoid reinventing existing behavior.
 
-## 输出结构
+## Output Structure
 
-除非用户要求其他格式，否则使用以下结构：
+Unless the user requests a different format, use this structure:
 
-- 项目概览
-- 证据索引
-- 仓库状态与运行风险
-- 架构分析
-- 工程成熟度评级
-- 模块说明
-- 问题总结
-- 优化建议
-- 后续开发指南
+- Project Overview
+- Evidence Index
+- Repository State and Runtime Risk
+- Architecture Analysis
+- Engineering Maturity Rating
+- Module Breakdown
+- Issue Summary
+- Optimization Recommendations
+- Future Development Guide
 
-完整交接文档请读取并套用 `references/project-handoff-template.md`。不要保留空章节；无法确认的内容放入“未确认事项”。
+For a complete handoff document, read and adapt `references/project-handoff-template.md`. Do not keep empty sections; place unknowns in "Unconfirmed Items".
 
-## 按需参考文件
+## On-Demand References
 
-- `references/project-handoff-template.md`：生成完整项目交接文档时读取。
-- `references/review-checklists.md`：项目属于明确技术栈或需要更细评审时读取对应章节。
-- `references/architecture-views.md`：项目存在多个应用、服务、worker、数据库或复杂外部依赖时读取，用于输出轻量架构视图。
+- `references/project-handoff-template.md`: read when generating a complete project handoff document.
+- `references/review-checklists.md`: read relevant sections when the project has a clear stack or needs deeper review.
+- `references/architecture-views.md`: read when the project has multiple apps, services, workers, databases, or complex external dependencies and needs a lightweight architecture view.
 
-## 证据标准
+## Evidence Standards
 
-推荐写法：
+Good examples:
 
-- `src/api/user.ts` 定义用户相关请求，并被 `src/pages/users/*` 消费。
-- `package.json` 显示项目使用 React + Vite + Zustand，因此可判断为 CSR 前端应用并采用客户端状态管理。
+- `src/api/user.ts` defines user-related API calls and is consumed by `src/pages/users/*`.
+- `package.json` shows React + Vite + Zustand, so the project can be identified as a CSR frontend with client-side state management.
 
-避免写法：
+Weak examples:
 
-- “项目应该用了 React”，但没有检查依赖清单、配置或 import。
-- “建议封装工具函数”，但没有先确认项目中是否已有同类 helper。
+- "The project probably uses React" without checking dependencies, config, or imports.
+- "Extract a helper function" without first checking whether a similar helper already exists.
 
-当用户只提供局部代码或项目描述时：
+When the user only provides partial code or a project description:
 
-- 如果缺失信息会导致分析明显失真，先要求补充关键文件。
-- 如果仍可分析，则基于已提供内容输出结论、限制说明和下一步应检查清单。
+- Ask for key missing files if the missing information would make the analysis materially misleading.
+- If analysis is still possible, state conclusions, limitations, and the next files or commands to inspect.
 
-## 评审检查清单
+## Review Checklist
 
-- 入口和路由是否清晰。
-- 领域模块边界是否明确。
-- 数据流是否能从 UI/API 追踪到持久化或外部服务。
-- 公共工具、组件、服务是否容易发现并被复用。
-- 错误处理、加载态、日志、校验、认证和权限边界是否放在合适位置。
-- 测试是否覆盖高风险路径，是否验证行为而不是实现细节。
-- 性能敏感路径是否避免重复计算、N+1 查询、大 bundle、过度 re-render、阻塞 IO 和无边界循环。
-- 配置和环境要求是否可发现。
-- 构建、测试、部署脚本是否与架构匹配。
-- 优化建议是否贴合当前技术栈，是否避免引入收益不明确的重型工具。
+- Are entry points and routes clear?
+- Are domain module boundaries clear?
+- Can data flow be traced from UI/API to persistence or external services?
+- Are shared utilities, components, and services discoverable and reused?
+- Are error handling, loading states, logging, validation, authentication, and authorization boundaries placed appropriately?
+- Do tests cover high-risk paths and verify behavior rather than implementation trivia?
+- Do performance-sensitive paths avoid repeated computation, N+1 queries, large bundles, excessive re-rendering, blocking IO, and unbounded loops?
+- Are configuration and environment requirements discoverable?
+- Do build, test, and deployment scripts match the architecture?
+- Do recommendations fit the current stack and avoid heavy tools without clear payoff?
 
-## 最终质量门槛
+## Final Quality Gate
 
-交付前自检：
+Before delivering, check:
 
-- 是否说明项目类型、核心价值和设计重点。
-- 是否列出关键入口、核心模块和依赖关系。
-- 是否提供证据索引，并区分事实、推断和未确认事项。
-- 是否说明仓库状态、运行风险和已识别验证命令。
-- 是否有模块表、依赖说明或轻量架构视图。
-- 每个问题是否都有“为什么是问题”。
-- 每条优化建议是否包含执行步骤或验证方式。
-- 是否列出已有可复用模块和新增代码前复用检查。
-- 是否标出不建议立即做的重构或改造及其原因。
+- Did you explain project type, core value, and design focus?
+- Did you list key entry points, core modules, and dependency relationships?
+- Did you provide an evidence index and distinguish facts, inferences, and unconfirmed items?
+- Did you explain repository state, runtime risk, and identified validation commands?
+- Did you include a module table, dependency explanation, or lightweight architecture view?
+- Does every issue explain why it is a problem?
+- Does every optimization recommendation include execution steps or validation?
+- Did you list reusable modules and a reuse check for new code?
+- Did you mark refactors or changes that should not be done yet, with reasons?

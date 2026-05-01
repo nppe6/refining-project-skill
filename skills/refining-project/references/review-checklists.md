@@ -1,67 +1,67 @@
-# 项目接手专项评审检查表
+# Project Handoff Review Checklists
 
-当项目具有明确技术栈或风险面时，读取对应章节辅助评审。不要把所有检查项机械输出到最终文档；只保留与当前项目有证据关联的发现。
+Use the relevant section when the project has a clear stack or risk area. Do not mechanically copy every checklist item into the final document; keep only findings supported by evidence in the current project.
 
-## 通用检查
+## General Review
 
-- 项目入口是否清晰：应用入口、路由入口、API 入口、CLI 入口、worker/job 入口。
-- 模块边界是否清晰：业务模块、公共模块、基础设施适配层是否混杂。
-- 依赖方向是否合理：业务层是否反向依赖 UI、controller 是否承载过多业务逻辑。
-- 配置是否可发现：环境变量、构建配置、部署配置是否有示例或文档。
-- 错误处理是否一致：异常、返回值、日志、重试、降级是否分散。
-- 测试是否覆盖高风险路径：认证、权限、数据写入、外部服务、核心业务流程。
-- 是否存在重复造轮子：已有 helper、组件、服务、schema、client 或成熟库未被复用。
-- 文档是否足以接手：如何安装、运行、测试、部署、排错是否可见。
+- Are project entry points clear: app entry, route entry, API entry, CLI entry, worker/job entry?
+- Are module boundaries clear, or are business modules, shared modules, and infrastructure adapters mixed together?
+- Are dependency directions reasonable, or does business logic depend backward on UI or controllers carry too much business logic?
+- Is configuration discoverable: environment variables, build config, deployment config, examples, and documentation?
+- Is error handling consistent across exceptions, return values, logs, retries, and fallbacks?
+- Do tests cover high-risk paths: authentication, authorization, data writes, external services, and core business flows?
+- Is there reinvented wheel risk: existing helpers, components, services, schemas, clients, or mature libraries not being reused?
+- Is documentation sufficient for handoff: install, run, test, deploy, and troubleshooting?
 
-## 前端项目
+## Frontend Projects
 
-- 路由结构是否清晰，页面和业务模块是否分离。
-- 状态管理是否集中且边界明确，是否把服务端状态误放进全局客户端状态。
-- API client 是否统一封装，错误处理、loading、重试和鉴权是否一致。
-- 组件是否复用设计系统，是否出现重复按钮、表单、表格、弹窗实现。
-- 性能风险：大 bundle、重复请求、过度 re-render、大列表无虚拟化、图片/资源未优化。
-- 可访问性：表单 label、键盘导航、焦点状态、颜色对比、语义标签是否被忽略。
-- 样式体系是否一致：Tailwind、CSS Modules、CSS-in-JS、组件库主题是否混用失控。
-- 测试是否覆盖关键交互、路由跳转、表单校验和错误态。
+- Is the routing structure clear, and are pages separated from business modules?
+- Is state management centralized with clear boundaries, or is server state incorrectly stored in global client state?
+- Is API access centralized through a client wrapper with consistent error handling, loading behavior, retry behavior, and auth?
+- Do components reuse the design system, or are buttons, forms, tables, and modals repeatedly reimplemented?
+- Performance risks: large bundles, repeated requests, excessive re-rendering, large lists without virtualization, unoptimized images/assets.
+- Accessibility: form labels, keyboard navigation, focus states, contrast, and semantic markup.
+- Styling consistency: Tailwind, CSS Modules, CSS-in-JS, and component library themes should not be mixed without clear boundaries.
+- Do tests cover key interactions, route transitions, form validation, and error states?
 
-## 后端/API 项目
+## Backend/API Projects
 
-- 路由、controller、service、model/repository 的职责是否清楚。
-- 参数校验和序列化是否集中，是否重复手写校验。
-- 鉴权和授权是否在统一边界处理，是否存在绕过路径。
-- 数据写入是否有事务、幂等和并发保护。
-- 外部服务调用是否有超时、重试、熔断、错误映射和日志。
-- API 响应结构是否稳定，错误码/状态码是否一致。
-- 后台任务/队列是否考虑重试、去重、死信、可观测性。
-- 测试是否覆盖核心 API、权限拒绝、失败路径和跨层集成。
+- Are route, controller, service, and model/repository responsibilities clear?
+- Are parameter validation and serialization centralized, or repeatedly hand-written?
+- Are authentication and authorization handled at consistent boundaries, with no bypass paths?
+- Do data writes use transactions, idempotency, and concurrency protection when needed?
+- Do external service calls include timeouts, retries, circuit breaking, error mapping, and logs?
+- Are API response shapes stable, with consistent status codes and error formats?
+- Do background jobs/queues handle retries, deduplication, dead-lettering, and observability?
+- Do tests cover core APIs, authorization denial, failure paths, and cross-layer integration?
 
-## 数据库与数据层
+## Database and Data Layer
 
-- schema、migration、seed、fixture 是否与代码保持一致。
-- 查询是否存在 N+1、缺少索引、全表扫描、大分页或不必要的数据加载。
-- 约束是否放在正确层：数据库唯一性/非空/外键约束与应用校验是否配合。
-- 数据迁移是否可回滚，是否考虑生产数据量、锁表、分批执行。
-- ORM 使用是否合理，是否把复杂业务逻辑塞进查询拼接。
-- 敏感数据是否有脱敏、最小化、访问控制和审计。
-- 测试是否覆盖数据边界、约束冲突、迁移安全和回滚策略。
+- Are schema, migrations, seeds, and fixtures consistent with the code?
+- Do queries risk N+1 access, missing indexes, full table scans, large pagination, or unnecessary data loading?
+- Are constraints placed at the right layer: database uniqueness/not-null/foreign keys plus application validation?
+- Are data migrations reversible and safe for production data volume, locks, and batching?
+- Is ORM usage reasonable, or is complex business logic hidden in query construction?
+- Is sensitive data minimized, masked, access-controlled, and auditable?
+- Do tests cover data boundaries, constraint conflicts, migration safety, and rollback strategy?
 
-## DevOps / 构建 / 部署
+## DevOps / Build / Deployment
 
-- 是否能从脚本中识别安装、开发、测试、构建和部署命令。
-- CI 是否执行测试、lint、类型检查和构建。
-- 环境变量是否有示例、默认值、必填说明和密钥处理。
-- Docker/容器配置是否区分开发和生产，镜像是否过大。
-- 构建产物、缓存、日志、上传文件等是否进入版本控制。
-- 部署流程是否有回滚、健康检查、迁移顺序和监控。
-- 依赖版本是否锁定，是否存在明显过期或高风险依赖。
+- Can install, develop, test, build, and deploy commands be identified from scripts/config?
+- Does CI run tests, linting, type checks, and builds?
+- Are environment variables documented with examples, defaults, required flags, and secret handling?
+- Do Docker/container configs distinguish development and production, and are images reasonably sized?
+- Are build artifacts, caches, logs, upload files, and generated files excluded from version control?
+- Does deployment include rollback, health checks, migration ordering, and monitoring?
+- Are dependency versions locked, and are there obviously stale or high-risk dependencies?
 
-## AI / Agent 项目
+## AI / Agent Projects
 
-- prompt、skill、tool、agent 职责是否分离。
-- 是否有清晰触发条件，避免过宽导致误触发。
-- 是否遵循渐进式披露：核心流程在主文件，长模板/检查表放 references。
-- 工具调用边界是否清晰：何时读文件、何时联网、何时请求用户确认。
-- 输出是否有质量门槛和自检，避免生成空泛总结。
-- 是否记录证据、限制和未确认事项，避免把推断当事实。
-- 是否有复用检查，避免重复创建已有 skill、脚本、模板或 helper。
-- 是否有真实任务回放或 forward-test 计划，用于验证 skill 是否稳定。
+- Are prompts, skills, tools, and agents separated by responsibility?
+- Are trigger conditions clear enough to avoid overly broad invocation?
+- Does the project follow progressive disclosure: core workflow in the main file, long templates/checklists in references?
+- Are tool boundaries clear: when to read files, when to browse, when to ask the user, and when to request approval?
+- Does output have a quality gate and self-check to avoid generic summaries?
+- Does the project record evidence, limitations, and unconfirmed items instead of treating inference as fact?
+- Is there a reuse check to avoid recreating existing skills, scripts, templates, or helpers?
+- Is there a real-task replay or forward-test plan to validate whether the skill is stable?

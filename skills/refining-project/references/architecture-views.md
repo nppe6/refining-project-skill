@@ -1,90 +1,90 @@
-# 轻量架构视图指南
+# Lightweight Architecture View Guide
 
-当项目存在多个应用、服务、worker、数据库、第三方系统或复杂模块依赖时，使用本指南帮助输出架构视图。小项目不需要强行画图，使用文字和表格即可。
+Use this guide when the project has multiple apps, services, workers, databases, third-party systems, or complex module dependencies. Small projects do not need forced diagrams; prose and tables are enough.
 
-## 使用原则
+## Principles
 
-- 从代码和配置反推架构，不要为了好看而虚构组件。
-- 先说明证据来源，再给视图。
-- 图或表只服务理解，不追求完整建模。
-- 如果信息不足，用“未确认”标记，不要补脑。
+- Infer architecture from code and configuration; do not invent components for visual polish.
+- State evidence before presenting the view.
+- Use diagrams or tables only when they improve understanding.
+- Mark missing information as "Unconfirmed" rather than filling gaps with guesses.
 
-## 视图层次
+## View Levels
 
-### 1. 系统上下文
+### 1. System Context
 
-说明项目服务的用户、外部系统和主要数据流。
+Describe users, external systems, and primary data flows.
 
-可用格式：
+Suggested format:
 
 ```markdown
-### 系统上下文
+### System Context
 
-- 使用者：
-- 外部系统：
-- 输入：
-- 输出：
-- 核心价值链：
+- Users:
+- External systems:
+- Inputs:
+- Outputs:
+- Core value chain:
 ```
 
-### 2. 应用/服务视图
+### 2. App/Service View
 
-当项目包含前端、后端、worker、数据库、缓存、队列或第三方服务时使用。
+Use this when the project includes frontend apps, backend services, workers, databases, caches, queues, or third-party services.
 
-可用格式：
+Suggested format:
 
 ```markdown
-### 应用/服务视图
+### App/Service View
 
-| 单元 | 类型 | 职责 | 依赖 | 证据 |
+| Unit | Type | Responsibility | Dependencies | Evidence |
 | --- | --- | --- | --- | --- |
 ```
 
-### 3. 模块/组件视图
+### 3. Module/Component View
 
-用于说明核心业务模块和依赖方向。
+Use this to explain core business modules and dependency direction.
 
-可用格式：
+Suggested format:
 
 ```markdown
-### 模块/组件视图
+### Module/Component View
 
-| 模块 | 位置 | 职责 | 上游 | 下游 |
+| Module | Location | Responsibility | Upstream | Downstream |
 | --- | --- | --- | --- | --- |
 ```
 
-### 4. 关键调用链
+### 4. Key Call Chain
 
-用于说明一个核心功能如何跨层流动。
+Use this to explain how a core feature moves across layers.
 
-可用格式：
+Suggested format:
 
 ```markdown
-### 关键调用链
+### Key Call Chain
 
-1. 用户/入口：
-2. 路由/API/命令：
-3. 业务服务：
-4. 数据访问：
-5. 外部依赖：
-6. 返回/副作用：
+1. User/entry point:
+2. Route/API/command:
+3. Business service:
+4. Data access:
+5. External dependencies:
+6. Return value/side effects:
 ```
 
-## Mermaid 可选格式
+## Optional Mermaid Format
 
-如果用户需要图，或者关系复杂到表格不够清晰，可以输出简短 Mermaid。不要在信息不足时使用。
+If the user asks for a diagram, or relationships are too complex for a table, include a short Mermaid diagram. Do not use it when information is insufficient.
 
 ```mermaid
 flowchart LR
-  User[用户] --> Web[前端/入口]
-  Web --> API[API 服务]
-  API --> DB[(数据库)]
-  API --> External[外部服务]
+  User[User] --> Web[Frontend/Entry]
+  Web --> API[API Service]
+  API --> DB[(Database)]
+  API --> External[External Service]
 ```
 
-## 何时不要画图
+## When Not to Draw
 
-- 项目只有少量文件，模块关系一眼可见。
-- 用户只提供了局部代码，无法确认系统边界。
-- 图会重复表格内容，不提供额外理解价值。
-- 关键依赖关系尚未从代码或配置中确认。
+- The project has only a few files and module relationships are obvious.
+- The user only provided partial code and system boundaries cannot be confirmed.
+- The diagram would repeat the table without adding understanding.
+- Key dependency relationships have not been confirmed from code or configuration.
