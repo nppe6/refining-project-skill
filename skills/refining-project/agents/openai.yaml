@@ -1,0 +1,4 @@
+interface:
+  display_name: "项目接手评审"
+  short_description: "将代码库分析成可交接的架构评审、问题总结和后续开发指南。"
+  default_prompt: "使用 $refining-project 分析这个代码库，并输出包含架构评审、问题总结和可执行优化建议的项目交接文档。"
