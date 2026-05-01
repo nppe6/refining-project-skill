@@ -4,6 +4,8 @@ Use this template for the final handoff document. Every conclusion should be tie
 
 ## Project Overview
 
+- Document status: Draft / Active / Completed
+- Last updated:
 - Project type:
 - Core value:
 - Design focus:
@@ -86,8 +88,8 @@ Fill this section when the project has multiple apps, services, workers, databas
 
 Sort issues by severity. Every issue must explain why it is a problem. Use either P0/P1/P2/P3 or High/Medium/Low consistently throughout the document.
 
-| Severity | Issue | Location/Evidence | Why It Is a Problem | Impact | Recommended Direction | Validation |
-| --- | --- | --- | --- | --- | --- | --- |
+| ID | Severity | Status | Issue | Location/Evidence | Why It Is a Problem | Impact | Recommended Direction | Validation |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
 ### Reinvented Wheel / Duplication Check
 
@@ -104,6 +106,13 @@ Sort issues by severity. Every issue must explain why it is a problem. Use eithe
 - Alternatives:
 
 ## Optimization Recommendations
+
+### Next Action Queue
+
+Keep this table short and current. Future AI sessions should start here before making changes.
+
+| ID | Priority | Status | Action | Evidence | Validation |
+| --- | --- | --- | --- | --- | --- |
 
 ### Architecture Optimization
 
@@ -158,6 +167,20 @@ Provide examples in the current technology stack when useful. Examples must serv
   - Does it reuse existing API/client/schema/validation patterns?
   - Does it include necessary tests or validation steps?
   - Does it introduce an unnecessary new dependency?
+
+## Decision Log
+
+Record decisions that should guide future work. Do not renumber existing decisions.
+
+| ID | Decision | Rationale | Date |
+| --- | --- | --- | --- |
+
+## Update History
+
+Keep this brief. Summarize meaningful review or implementation updates, not every tiny edit.
+
+| Date | Update | Evidence/PR/Commit |
+| --- | --- | --- |
 
 ## External Sources and Version Evidence
 

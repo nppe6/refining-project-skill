@@ -23,6 +23,7 @@ skills/
       openai.yaml
     references/
       architecture-views.md
+      handoff-workflow.md
       project-handoff-template.md
       review-checklists.md
 README.md
@@ -35,6 +36,7 @@ LICENSE
 
 - `skills/refining-project/SKILL.md`: main skill instructions, including trigger description, principles, workflow, output structure, and quality gate.
 - `skills/refining-project/references/project-handoff-template.md`: complete project handoff template to adapt when producing a full report.
+- `skills/refining-project/references/handoff-workflow.md`: durable documentation workflow for creating or updating target-project handoff and optimization documents.
 - `skills/refining-project/references/review-checklists.md`: stack-specific review checklists for frontend, backend/API, database, DevOps, and AI/agent projects.
 - `skills/refining-project/references/architecture-views.md`: lightweight architecture view guide for complex projects, including system context, app/service view, module view, and key call chains.
 - `skills/refining-project/agents/openai.yaml`: UI metadata, including display name, short description, and default prompt.
@@ -70,6 +72,19 @@ This skill follows the `$skill-creator` structure:
 - Strengthened the reinvented wheel check so new implementation recommendations must first explain whether existing modules can be reused.
 - Added stack-specific review checklists for frontend, backend/API, database, DevOps, and AI/agent projects.
 - Added lightweight architecture views for complex projects, including system context, service view, module view, and key call chains.
+- Added a persistent handoff workflow so non-trivial reviews create or update short target-project documents that future AI sessions can resume.
+
+## Persistent Handoff Behavior
+
+For non-trivial reviews, the skill should create or update a durable document in the target project unless the user explicitly asks for chat-only output.
+
+Default behavior:
+
+- Prefer an existing relevant handoff, review, architecture, or optimization document.
+- Otherwise create `docs/project-handoff.md` in the target project when appropriate.
+- Keep the main handoff short and updateable.
+- Track findings, next actions, decisions, and update history with stable IDs.
+- During follow-up implementation, update the same document instead of relying on chat memory.
 
 ## Language
 

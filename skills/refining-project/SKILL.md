@@ -16,12 +16,14 @@ Use this skill to turn project code, partial code snippets, or a project descrip
 - Every recommendation to add new code must pass a reuse check: determine whether a similar function, component, service, schema, client, or third-party library already exists; if it does, explain how to reuse it instead of creating a new implementation.
 - Treat duplicated work and reinvented wheels as first-class review targets: identify repeated logic, custom code that should use an existing library, and internal modules that should be reused.
 - External sources may support judgment, but must not override local code evidence. When framework APIs, dependency versions, best practices, or security rules may be outdated, prefer official or current sources and cite them in the output.
+- Produce durable project artifacts, not only chat output. For non-trivial reviews, create or update a short handoff/optimization document in the target project so future AI sessions can resume from evidence and decisions.
 - Preserve the user's language. If the user asks in English, respond in English.
 
 ## Workflow
 
 1. **Inventory the project**
    - Read root files: `README`, dependency/build manifests, lockfiles, framework config, environment examples, Docker/CI config, test config, and AGENTS/CLAUDE/CODEX guidance.
+   - Before writing a new report, search the target project for existing handoff, audit, review, or optimization documents. Prefer updating an existing relevant document over creating a duplicate.
    - Use `rg --files` to build a file map, then inspect application logic, tests, shared modules, and configuration directories.
    - Identify runtime entry points: frontend routes/pages, backend server entry points, API routes/controllers, CLI entry points, jobs/workers, serverless handlers, etc.
    - Check repository state and runtime risk: current branch, uncommitted changes, whether dependencies can be installed, whether run/test/build commands are identifiable, and which validations cannot be executed.
@@ -59,6 +61,12 @@ Use this skill to turn project code, partial code snippets, or a project descrip
    - Call out traps: hidden coupling, generated files, environment dependencies, migration risks, brittle tests, framework lifecycle concerns, and areas where duplicated implementation is likely.
    - Include a "before adding new code" checklist to help future AI agents avoid reinventing existing behavior.
 
+7. **Persist and maintain the handoff**
+   - Read `references/handoff-workflow.md` before writing or updating project documentation.
+   - For a first review, create a concise handoff document in the target project unless the user explicitly asks for chat-only output.
+   - For follow-up optimization work, update the existing handoff or action document as work progresses: mark completed items, add new evidence, record decisions, and keep next actions current.
+   - Avoid one ever-growing document. Keep the main handoff short and split deep notes only when the topic is large enough to justify a separate file.
+
 ## Output Structure
 
 Unless the user requests a different format, use this structure:
@@ -78,6 +86,7 @@ For a complete handoff document, read and adapt `references/project-handoff-temp
 ## On-Demand References
 
 - `references/project-handoff-template.md`: read when generating a complete project handoff document.
+- `references/handoff-workflow.md`: read before creating or updating durable handoff/optimization documents in the target project.
 - `references/review-checklists.md`: read relevant sections when the project has a clear stack or needs deeper review.
 - `references/architecture-views.md`: read when the project has multiple apps, services, workers, databases, or complex external dependencies and needs a lightweight architecture view.
 
@@ -123,4 +132,5 @@ Before delivering, check:
 - Does every issue explain why it is a problem?
 - Does every optimization recommendation include execution steps or validation?
 - Did you list reusable modules and a reuse check for new code?
+- Did you create or update a durable target-project handoff/optimization document, or explicitly state why output is chat-only?
 - Did you mark refactors or changes that should not be done yet, with reasons?
