@@ -1,4 +1,4 @@
-# 项目接手评审 Skill
+# Refining Project Skill
 
 这个仓库用于维护 Codex skill：`refining-project`。
 
