@@ -1,4 +1,4 @@
 interface:
-  display_name: "Project Handoff Review"
+  display_name: "refining-project"
   short_description: "Analyze a codebase into a practical architecture review, issue summary, and development guide."
   default_prompt: "Use $refining-project to analyze this codebase and produce a project handoff document with architecture review, issue summary, and executable recommendations."
